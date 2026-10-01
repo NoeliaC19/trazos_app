@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Trazar {{ caracter }}{% endblock %}
+{% block contenido %}
+<div class="contenedor centro">
+    <div class="cabecera-trazo">
+        <a href="{{ url_for('practicar', estudiante_id=estudiante.id) }}" class="boton-volver">⬅ Volver</a>
+        <h1>Trazá la {{ 'letra' if tipo == 'letra' else 'número' }} <span class="resaltado">{{ caracter }}</span></h1>
+    </div>
+
+    <div class="tarjeta">
+        <canvas id="lienzo" width="500" height="500"></canvas>
+        <div id="mensaje" class="mensaje"></div>
+
+        <div class="controles">
+            <button id="btn-limpiar" class="boton-secundario">🧹 Borrar</button>
+            <button id="btn-verificar" class="boton-primario">✅ Verificar</button>
+            {% if siguiente %}
+            <button id="btn-siguiente" class="boton-exito" disabled>➡ Siguiente</button>
+            {% else %}
+            <a href="{{ url_for('practicar', estudiante_id=estudiante.id) }}" id="btn-siguiente" class="boton-exito boton-deshabilitado">🎉 ¡Terminaste!</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const CONFIG = {
+        estudianteId: {{ estudiante.id }},
+        caracter: "{{ caracter }}",
+        tipo: "{{ tipo }}",
+        siguienteUrl: {% if siguiente %}"{{ url_for('trazar', estudiante_id=estudiante.id, tipo=tipo, caracter=siguiente) }}"{% else %}null{% endif %}
+    };
+</script>
+<script src="{{ url_for('static', filename='js/trace.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}Primeros Trazos - Inicio{% endblock %}
+{% block contenido %}
+<div class="contenedor centro">
+    <h1 class="titulo-grande">✏️ Primeros Trazos 🔤</h1>
+    <p class="subtitulo">¡Aprende a escribir letras y números jugando!</p>
+
+    <div class="tarjeta">
+        <h2>¿Quién va a practicar?</h2>
+
+        {% if estudiantes %}
+        <div class="lista-estudiantes">
+            {% for e in estudiantes %}
+            <div class="estudiante-item">
+                <a class="estudiante-boton" href="{{ url_for('practicar', estudiante_id=e.id) }}">
+                    <span class="avatar">{{ e.avatar }}</span>
+                    <span class="nombre">{{ e.nombre }}</span>
+                </a>
+                <form method="POST" action="{{ url_for('eliminar_estudiante', estudiante_id=e.id) }}"
+                      onsubmit="return confirm('¿Borrar a {{ e.nombre }} y su progreso?');">
+                    <button type="submit" class="boton-eliminar" title="Eliminar">🗑️</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="texto-suave">Todavía no hay ningún peque registrado. ¡Creá el primero!</p>
+        {% endif %}
+
+        <hr class="separador">
+
+        <h3>Pone tu Nombre y Elegi tu Emoji</h3>
+        <form method="POST" action="{{ url_for('crear_estudiante') }}" class="form-nuevo">
+            <input type="text" name="nombre" placeholder="Nombre" maxlength="30" required>
+            <select name="avatar">
+                <option value="⭐">⭐ Estrella</option>
+                <option value="🦄">🦄 Unicornio</option>
+                <option value="🐶">🐶 Perrito</option>
+                <option value="🐱">🐱 Gatito</option>
+                <option value="🦁">🦁 Leoncito</option>
+                <option value="🌈">🌈 Arcoíris</option>
+                <option value="🚀">🚀 Cohete</option>
+                <option value="🐢">🐢 Tortuga</option>
+            </select>
+            <button type="submit" class="boton-primario">Crear</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

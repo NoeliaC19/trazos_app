@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titulo %}Practicar - {{ estudiante.nombre }}{% endblock %}
+{% block contenido %}
+<div class="contenedor">
+    <div class="cabecera">
+        <a href="{{ url_for('inicio') }}" class="boton-volver">⬅ VOLVER</a>
+        <h1>{{ estudiante.avatar }} ¡Hola, {{ estudiante.nombre }}!</h1>
+        <p class="progreso-texto">Progreso total: {{ completados }} / {{ total }} completados</p>
+        <div class="barra-progreso">
+            <div class="barra-progreso-interna" style="width: {{ (completados / total * 100) if total else 0 }}%;"></div>
+        </div>
+    </div>
+
+    <h2 class="seccion-titulo">🔤 Vocales</h2>
+    <div class="grilla">
+        {% for l in letras %}
+        <a class="celda {{ 'completada' if l.completado else '' }}"
+           href="{{ url_for('trazar', estudiante_id=estudiante.id, tipo='letra', caracter=l.caracter) }}">
+            <span class="celda-caracter">{{ l.caracter }}</span>
+            {% if l.completado %}<span class="celda-check">✔</span>{% endif %}
+        </a>
+        {% endfor %}
+    </div>
+
+    <h2 class="seccion-titulo">🔢 Números</h2>
+    <div class="grilla">
+        {% for n in numeros %}
+        <a class="celda {{ 'completada' if n.completado else '' }}"
+           href="{{ url_for('trazar', estudiante_id=estudiante.id, tipo='numero', caracter=n.caracter) }}">
+            <span class="celda-caracter">{{ n.caracter }}</span>
+            {% if n.completado %}<span class="celda-check">✔</span>{% endif %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
